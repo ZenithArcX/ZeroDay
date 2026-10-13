@@ -120,6 +120,8 @@
   const diagFullscreen = document.getElementById('diag-fullscreen');
   const diagOrientation = document.getElementById('diag-orientation');
   const diagTimezone = document.getElementById('diag-timezone');
+  const diagPwa = document.getElementById('diag-pwa');
+  const pwaInstallBtn = document.getElementById('pwa-install-btn');
 
   // Toast Container
   const toastContainer = document.getElementById('toast-container');
@@ -590,6 +592,10 @@
     diagFullscreen.textContent = document.fullscreenEnabled ? 'Supported' : 'Unsupported';
     diagOrientation.textContent = screen.orientation && screen.orientation.lock ? 'Supported' : 'Layout-Only (Desktop/iOS)';
     diagTimezone.textContent = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+    if (diagPwa) {
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || Boolean(window.navigator.standalone);
+      diagPwa.textContent = isStandalone ? 'Installed (Standalone)' : 'Ready (Installable PWA)';
+    }
 
     // Sync switches
     settingShowSeconds.checked = prefs.showSeconds;
@@ -780,6 +786,48 @@
       } else if (e.key === 's' || e.key === 'S') {
         toggleSecondsBtn.click();
       }
+    });
+
+    // --- PWA & Android Installation Lifecycle ---
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js')
+        .then((reg) => console.log('[DayZero PWA] Service Worker registered:', reg.scope))
+        .catch((err) => console.warn('[DayZero PWA] Service Worker failed:', err));
+    }
+
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      if (pwaInstallBtn) {
+        pwaInstallBtn.classList.remove('hidden');
+      }
+    });
+
+    if (pwaInstallBtn) {
+      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || Boolean(window.navigator.standalone);
+      if (!isStandalone) {
+        pwaInstallBtn.classList.remove('hidden');
+      }
+
+      pwaInstallBtn.addEventListener('click', async () => {
+        if (deferredPrompt) {
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          if (outcome === 'accepted') {
+            showToast('Installing DayZero on device...');
+          }
+          deferredPrompt = null;
+          pwaInstallBtn.classList.add('hidden');
+        } else {
+          showToast('Tap browser menu (⋮) -> "Install App" or "Add to Home screen"');
+        }
+      });
+    }
+
+    window.addEventListener('appinstalled', () => {
+      showToast('DayZero Installed Successfully!');
+      if (pwaInstallBtn) pwaInstallBtn.classList.add('hidden');
     });
 
     // Start Clock Tick (zero timer drift, 250ms cadence)

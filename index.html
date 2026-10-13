@@ -6,6 +6,15 @@
   <title>DayZero · Immersive Time Telemetry</title>
   <meta name="description" content="A minimal, immersive countdown dashboard that makes time feel visible and scarce, helping you focus on software development.">
   <meta name="theme-color" content="#07080c">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="DayZero">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png">
+  <link rel="apple-touch-icon" href="icon-192.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -49,6 +58,9 @@
         
         <button id="window-mode-btn" class="btn-subtle" type="button">
           Open in standard window mode
+        </button>
+        <button id="pwa-install-btn" class="btn-subtle hidden" type="button" style="border: 1px solid rgba(139, 92, 246, 0.45); color: #c4b5fd;">
+          📲 Install App on Device
         </button>
         <a href="doc.html" class="btn-subtle" style="text-decoration: none; opacity: 0.75; font-size: 0.76rem;" target="_blank">
           📖 Architecture &amp; Beginner Guide (doc.html)
@@ -438,6 +450,10 @@
             <div class="diag-item">
               <span class="diag-label">Local Timezone</span>
               <span class="diag-val" id="diag-timezone">--</span>
+            </div>
+            <div class="diag-item">
+              <span class="diag-label">PWA Mode</span>
+              <span class="diag-val" id="diag-pwa">Detecting...</span>
             </div>
           </div>
         </div>

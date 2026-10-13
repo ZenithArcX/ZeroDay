@@ -26,6 +26,17 @@ python -m http.server 3000
 
 ---
 
+## 📱 How to Install on Android Devices (PWA)
+
+DayZero is built as a **Progressive Web App (PWA)**, meaning you can install it directly onto any Android phone or tablet without needing Google Play Store:
+
+1. Open **[https://zenitharcx.github.io/ZeroDay/](https://zenitharcx.github.io/ZeroDay/)** in **Google Chrome**, **Brave**, or **Samsung Internet** on your Android device.
+2. Tap the **"📲 Install App on Device"** button on the landing screen, or tap the browser menu (**⋮**) in the top-right corner.
+3. Select **"Install App"** (or **"Add to Home screen"**).
+4. Tap **Install**.
+5. DayZero will now appear directly in your Android app drawer and home screen with its custom icon!
+6. When launched, it runs in standalone mode (no browser address bar), supports full screen, keeps your screen awake via Wake Lock, and works 100% offline via Service Worker.
+
 ## ⚡ Core Features & User Experience
 
 1. **Lightweight Landing Screen & Instant Activation**

@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>DayZero · Immersive Time Telemetry</title>
+  <meta name="description" content="A minimal, immersive countdown dashboard that makes time feel visible and scarce, helping you focus on software development.">
+  <meta name="theme-color" content="#07080c">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="theme-prime">
+  <!-- Atmospheric Background Glow / Aura Drift -->
+  <div class="ambient-aura" aria-hidden="true">
+    <div class="aura-orb aura-orb-1"></div>
+    <div class="aura-orb aura-orb-2"></div>
+    <div class="aura-orb aura-orb-3"></div>
+  </div>
+
+  <!-- Screen 1: Clean Lightweight Landing Screen -->
+  <section id="landing-screen" class="view-screen active" aria-label="DayZero Activation">
+    <div class="landing-container">
+      <div class="landing-badge">
+        <span class="pulse-dot"></span> TIME TELEMETRY INSTRUMENT
+      </div>
+      
+      <h1 class="landing-brand">DayZero</h1>
+      <p class="landing-tagline">TIME IS MOVING · STAY FOCUSED</p>
+
+      <div class="landing-clock-card">
+        <div class="landing-live-time" id="landing-live-time">00:00:00</div>
+        <div class="landing-live-date" id="landing-live-date">Loading calendar...</div>
+      </div>
+
+      <div class="landing-actions">
+        <!-- Direct user gesture button for fullscreen & wake lock -->
+        <button id="activate-btn" class="btn-activate" type="button" autofocus>
+          <span class="btn-glow"></span>
+          <span class="btn-inner">
+            <svg class="icon-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+            </svg>
+            ACTIVATE DAYZERO
+          </span>
+        </button>
+        <p class="activation-hint">Launches fullscreen & keeps your screen awake for deep focus</p>
+        
+        <button id="window-mode-btn" class="btn-subtle" type="button">
+          Open in standard window mode
+        </button>
+        <a href="doc.html" class="btn-subtle" style="text-decoration: none; opacity: 0.75; font-size: 0.76rem;" target="_blank">
+          📖 Architecture &amp; Beginner Guide (doc.html)
+        </a>
+      </div>
+
+      <div class="landing-feature-grid">
+        <div class="feature-item">
+          <span class="feature-label">CALENDAR TELEMETRY</span>
+          <span class="feature-desc">Zero-drift day, week, month & year countdowns</span>
+        </div>
+        <div class="feature-item">
+          <span class="feature-label">TOUCH SHIELD</span>
+          <span class="feature-desc">Press-and-hold lock for desk-propped devices</span>
+        </div>
+        <div class="feature-item">
+          <span class="feature-label">ZEN FOCUS</span>
+          <span class="feature-desc">Distraction-free pure visual passage of time</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Screen 2: DayZero Dashboard -->
+  <main id="dashboard-screen" class="view-screen hidden" aria-label="DayZero Dashboard">
+    
+    <!-- Top Header Navigation -->
+    <header class="prime-header">
+      <div class="brand-group">
+        <span class="brand-title">DayZero</span>
+        <span class="brand-subtitle">TIME IS MOVING · STAY FOCUSED</span>
+      </div>
+
+      <div class="header-status-group">
+        <div class="telemetry-pill" title="Live Calendar Telemetry Active">
+          <span class="live-indicator"></span>
+          <span class="telemetry-text">LIVE TELEMETRY</span>
+        </div>
+        
+        <!-- Quick Zen Mode Toggle -->
+        <button id="quick-focus-btn" class="icon-btn" type="button" title="Toggle Focus Display (Hides secondary controls)" aria-label="Toggle Focus Display">
+          <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+
+        <!-- Settings Gear -->
+        <button id="open-settings-btn" class="icon-btn" type="button" title="Settings" aria-label="Open Settings">
+          <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.5a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+            <circle cx="12" cy="12" r="3"></circle>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="divider-line"></div>
+
+    <!-- Main Dashboard Content Container -->
+    <div class="dashboard-body">
+      
+      <!-- Primary Center Stage: TODAY -->
+      <section class="hero-time-stage" aria-label="Today Countdown">
+        <div class="time-header-label">
+          <span class="accent-dot"></span>
+          TODAY · TIME REMAINING
+        </div>
+
+        <div class="hero-digital-clock" id="today-countdown-time" aria-live="off">
+          00:00:00
+        </div>
+        
+        <div class="hero-clock-labels" id="today-time-labels">
+          <span>Hours</span> : <span>Minutes</span> : <span>Seconds</span>
+        </div>
+
+        <!-- Prominent Animated Progress Ring -->
+        <div class="ring-container" id="today-ring-wrapper">
+          <svg class="progress-ring-svg" viewBox="0 0 220 220" role="img" aria-label="Day progress indicator">
+            <defs>
+              <linearGradient id="ringGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#4f46e5" />
+                <stop offset="50%" stop-color="#8b5cf6" />
+                <stop offset="100%" stop-color="#06b6d4" />
+              </linearGradient>
+              <filter id="ringGlow" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="4" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+              </filter>
+            </defs>
+            <!-- Background Track -->
+            <circle class="ring-track" cx="110" cy="110" r="92"></circle>
+            <!-- Animated Progress Arc -->
+            <circle class="ring-progress" id="today-ring-progress" cx="110" cy="110" r="92"></circle>
+          </svg>
+
+          <!-- Content inside Ring -->
+          <div class="ring-center-content">
+            <div class="ring-percent-value" id="today-ring-percent">0%</div>
+            <div class="ring-percent-label" id="today-ring-label">REMAINING</div>
+            <div class="ring-sub-percent" id="today-ring-elapsed">0% ELAPSED</div>
+          </div>
+        </div>
+
+        <!-- Subtle Focus Anchor Reminder -->
+        <p class="focus-quote" id="focus-reminder-text">
+          The clock won't wait. Make this hour count.
+        </p>
+      </section>
+
+      <!-- Secondary Time Panels: WEEK, MONTH, YEAR -->
+      <section class="panels-grid" aria-label="Calendar Interval Breakdowns">
+        
+        <!-- Panel 1: THIS WEEK -->
+        <div class="time-card card-week" id="card-week">
+          <div class="card-header">
+            <span class="card-interval">WEEK</span>
+            <span class="card-percent-badge" id="week-percent-badge">0% rem</span>
+          </div>
+          <div class="card-remaining-time" id="week-time-remaining">
+            0d 00h
+          </div>
+          <div class="card-progress-wrapper">
+            <div class="card-progress-track">
+              <div class="card-progress-fill fill-week" id="week-progress-fill" style="width: 0%;"></div>
+            </div>
+          </div>
+          <div class="card-footer-stats">
+            <span id="week-elapsed-stat">0% elapsed</span>
+            <span id="week-remaining-stat">0% remaining</span>
+          </div>
+        </div>
+
+        <!-- Panel 2: THIS MONTH -->
+        <div class="time-card card-month" id="card-month">
+          <div class="card-header">
+            <span class="card-interval">MONTH</span>
+            <span class="card-percent-badge" id="month-percent-badge">0% rem</span>
+          </div>
+          <div class="card-remaining-time" id="month-time-remaining">
+            0d 00h
+          </div>
+          <div class="card-progress-wrapper">
+            <div class="card-progress-track">
+              <div class="card-progress-fill fill-month" id="month-progress-fill" style="width: 0%;"></div>
+            </div>
+          </div>
+          <div class="card-footer-stats">
+            <span id="month-elapsed-stat">0% elapsed</span>
+            <span id="month-remaining-stat">0% remaining</span>
+          </div>
+        </div>
+
+        <!-- Panel 3: THIS YEAR -->
+        <div class="time-card card-year" id="card-year">
+          <div class="card-header">
+            <span class="card-interval">YEAR</span>
+            <span class="card-percent-badge" id="year-percent-badge">0% rem</span>
+          </div>
+          <div class="card-remaining-time" id="year-time-remaining">
+            00d
+          </div>
+          <div class="card-progress-wrapper">
+            <div class="card-progress-track">
+              <div class="card-progress-fill fill-year" id="year-progress-fill" style="width: 0%;"></div>
+            </div>
+          </div>
+          <div class="card-footer-stats">
+            <span id="year-elapsed-stat">0% elapsed</span>
+            <span id="year-remaining-stat">0% remaining</span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Bottom Controls & Interaction Toolbar -->
+    <footer class="prime-footer-toolbar" id="footer-toolbar">
+      <!-- Fullscreen Toggle -->
+      <button id="toggle-fullscreen-btn" class="toolbar-btn" type="button" title="Toggle Fullscreen (F)">
+        <svg class="tb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path class="fs-enter-path" d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+        </svg>
+        <span class="tb-label" id="fullscreen-btn-label">Fullscreen</span>
+      </button>
+
+      <!-- Screen Awake (Wake Lock) Toggle -->
+      <button id="toggle-wakelock-btn" class="toolbar-btn" type="button" title="Keep Screen Awake">
+        <svg class="tb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        </svg>
+        <span class="wakelock-status-dot" id="wakelock-dot"></span>
+        <span class="tb-label" id="wakelock-btn-label">Screen awake</span>
+      </button>
+
+      <!-- Touch Lock Protection Toggle -->
+      <button id="activate-touchlock-btn" class="toolbar-btn" type="button" title="Touch Protection Shield">
+        <svg class="tb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+        <span class="tb-label">Touch lock</span>
+      </button>
+
+      <!-- Focus Mode Toggle (Hide Controls) -->
+      <button id="toggle-focus-mode-btn" class="toolbar-btn" type="button" title="Focus Display (Zen View)">
+        <svg class="tb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+        <span class="tb-label" id="focus-btn-label">Focus Display</span>
+      </button>
+
+      <!-- Seconds Toggle -->
+      <button id="toggle-seconds-btn" class="toolbar-btn" type="button" title="Toggle Seconds Display">
+        <svg class="tb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polyline points="12 6 12 12 16 14"></polyline>
+        </svg>
+        <span class="tb-label" id="seconds-btn-label">Seconds: On</span>
+      </button>
+
+      <!-- Orientation Toggle -->
+      <button id="toggle-orientation-btn" class="toolbar-btn" type="button" title="Orientation Mode">
+        <svg class="tb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+          <line x1="12" y1="18" x2="12.01" y2="18"></line>
+        </svg>
+        <span class="tb-label" id="orientation-btn-label">Auto</span>
+      </button>
+    </footer>
+
+    <!-- Small Discreet Bottom Caption -->
+    <div class="footer-telemetry-caption">
+      <span>DayZero Live Telemetry</span> · <span>Countdown values are exact local calendar boundaries</span>
+    </div>
+
+    <!-- Exit Focus Floating Pill (Visible only when Focus Display is active) -->
+    <button id="exit-focus-pill" class="exit-focus-pill hidden" type="button">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="15" y1="9" x2="9" y2="15"></line>
+        <line x1="9" y1="9" x2="15" y2="15"></line>
+      </svg>
+      Exit Focus Display
+    </button>
+  </main>
+
+  <!-- Touch Protection Shield Overlay (Active when Touch Lock is ON) -->
+  <div id="touch-protection-overlay" class="touch-protection-overlay hidden" aria-hidden="true">
+    <div class="touch-lock-badge">
+      <div class="touch-ring-container">
+        <svg class="touch-unlock-svg" viewBox="0 0 100 100">
+          <circle class="touch-track" cx="50" cy="50" r="42"></circle>
+          <circle class="touch-progress" id="touch-unlock-progress" cx="50" cy="50" r="42"></circle>
+        </svg>
+        <div class="touch-icon-center">
+          <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+      </div>
+      <div class="touch-lock-title">TOUCH PROTECTION ACTIVE</div>
+      <div class="touch-lock-instructions" id="touch-lock-instruction-text">
+        Press &amp; hold for 1.5s to unlock
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Toast Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- Settings Modal Dialog -->
+  <div id="settings-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 id="settings-title" class="modal-title">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          DAYZERO SETTINGS
+        </h2>
+        <button id="close-settings-btn" class="modal-close-btn" type="button" aria-label="Close Settings">×</button>
+      </div>
+
+      <div class="modal-content">
+        <!-- Setting: Orientation Preference -->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-name">Layout Orientation</span>
+            <span class="setting-desc">Auto follows device. Portrait/Landscape adapts layout and requests screen lock.</span>
+          </div>
+          <div class="segmented-control" id="orientation-select-group">
+            <button class="seg-btn active" data-orientation="auto">Auto</button>
+            <button class="seg-btn" data-orientation="portrait">Portrait</button>
+            <button class="seg-btn" data-orientation="landscape">Landscape</button>
+          </div>
+        </div>
+
+        <!-- Setting: Show Seconds -->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-name">Show Seconds</span>
+            <span class="setting-desc">Display seconds in digital clocks and live countdowns</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="setting-show-seconds" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <!-- Setting: Primary Ring Metric -->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-name">Primary Ring Metric</span>
+            <span class="setting-desc">Select which percentage takes center stage in the progress ring</span>
+          </div>
+          <div class="segmented-control" id="ring-metric-group">
+            <button class="seg-btn active" data-metric="remaining">Remaining %</button>
+            <button class="seg-btn" data-metric="elapsed">Elapsed %</button>
+          </div>
+        </div>
+
+        <!-- Setting: Hourly Chime -->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-name">Hourly Focus Chime</span>
+            <span class="setting-desc">Play a soft, harmonic sine chime at the top of every hour</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="setting-hourly-chime">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <!-- Setting: Atmospheric Motion -->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-name">Atmospheric Aura Motion</span>
+            <span class="setting-desc">Gentle gradient drift in the background (respects system reduced motion)</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="setting-aura-motion" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <!-- Setting: Focus Reminders -->
+        <div class="setting-row">
+          <div class="setting-info">
+            <span class="setting-name">Focus Anchor Message</span>
+            <span class="setting-desc">Display brief visceral time scarcity reminders</span>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="setting-focus-message" checked>
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+
+        <!-- Telemetry Diagnostics & Capabilities -->
+        <div class="telemetry-box">
+          <div class="telemetry-title">DEVICE CAPABILITIES &amp; TELEMETRY</div>
+          <div class="diag-grid">
+            <div class="diag-item">
+              <span class="diag-label">Screen Wake Lock</span>
+              <span class="diag-val" id="diag-wakelock">Detecting...</span>
+            </div>
+            <div class="diag-item">
+              <span class="diag-label">Fullscreen API</span>
+              <span class="diag-val" id="diag-fullscreen">Detecting...</span>
+            </div>
+            <div class="diag-item">
+              <span class="diag-label">Orientation Lock</span>
+              <span class="diag-val" id="diag-orientation">Detecting...</span>
+            </div>
+            <div class="diag-item">
+              <span class="diag-label">Local Timezone</span>
+              <span class="diag-val" id="diag-timezone">--</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button id="exit-to-landing-btn" class="btn-danger-outline" type="button">
+          Exit to Landing Screen
+        </button>
+        <button id="save-settings-btn" class="btn-primary-small" type="button">
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

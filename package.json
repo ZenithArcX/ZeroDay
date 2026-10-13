@@ -1,0 +1,20 @@
+{
+  "name": "dayzero",
+  "version": "1.0.0",
+  "description": "DayZero - Minimal, immersive countdown dashboard for software developers",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "keywords": [
+    "timer",
+    "dayzero",
+    "productivity",
+    "focus",
+    "dashboard",
+    "countdown"
+  ],
+  "author": "",
+  "license": "MIT"
+}

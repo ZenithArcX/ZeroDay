@@ -399,8 +399,22 @@ body.reduce-motion .aura-orb {
    ========================================================================== */
 
 #dashboard-screen {
-  padding: 24px 32px 18px 32px;
-  justify-content: space-between;
+  padding: clamp(14px, 2vh, 24px) clamp(16px, 3vw, 32px) clamp(10px, 1.5vh, 18px) clamp(16px, 3vw, 32px);
+  justify-content: flex-start;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+}
+
+#dashboard-screen::-webkit-scrollbar {
+  width: 4px;
+}
+
+#dashboard-screen::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 99px;
 }
 
 /* Header */
@@ -503,14 +517,16 @@ body.reduce-motion .aura-orb {
 .dashboard-body {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  flex: 1 0 auto;
   justify-content: center;
   align-items: center;
   width: 100%;
   max-width: 1100px;
   margin: 0 auto;
-  gap: 22px;
-  overflow: hidden;
+  gap: clamp(12px, 2vh, 22px);
+  overflow: visible;
+  min-height: min-content;
+  padding-bottom: 6px;
 }
 
 /* Hero Center Stage: TODAY */
@@ -668,6 +684,8 @@ body.reduce-motion .aura-orb {
   gap: 8px;
   box-shadow: var(--glow-card);
   transition: border-color 0.2s ease, transform 0.2s ease, background 0.2s ease;
+  flex-shrink: 0;
+  box-sizing: border-box;
 }
 
 .time-card:hover {
@@ -763,10 +781,11 @@ body.reduce-motion .aura-orb {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
   flex-shrink: 0;
-  padding-top: 12px;
+  margin-top: auto;
+  padding: 10px 0 4px 0;
   flex-wrap: wrap;
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
@@ -1273,32 +1292,51 @@ input:checked + .toggle-slider:before {
 /* 1. Mobile Portrait (max-width: 680px) */
 @media (max-width: 680px) {
   #dashboard-screen {
-    padding: 16px 16px 12px 16px;
+    padding: 12px 14px 10px 14px;
     overflow-y: auto;
   }
 
   .prime-header {
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
+  }
+
+  .dashboard-body {
+    gap: 12px;
   }
 
   .hero-digital-clock {
-    font-size: 2.8rem;
+    font-size: 2.6rem;
+  }
+
+  .hero-clock-labels {
+    margin-bottom: 10px;
   }
 
   .ring-container {
-    width: 165px;
-    height: 165px;
-    margin-bottom: 10px;
+    width: clamp(130px, 18vh, 155px);
+    height: clamp(130px, 18vh, 155px);
+    margin-bottom: 8px;
+  }
+
+  .focus-quote {
+    font-size: 0.72rem;
+    margin-bottom: 2px;
   }
 
   .panels-grid {
     grid-template-columns: 1fr;
-    gap: 10px;
+    gap: 8px;
   }
 
   .time-card {
-    padding: 12px 16px;
+    padding: 10px 14px;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .card-remaining-time {
+    font-size: 1.25rem;
   }
 
   .landing-feature-grid {
@@ -1388,12 +1426,50 @@ input:checked + .toggle-slider:before {
 }
 
 /* Forced Layout Classes (From User Settings) */
+body.orientation-force-portrait #dashboard-screen {
+  padding: 12px 16px 10px 16px !important;
+  overflow-y: auto !important;
+}
+
 body.orientation-force-portrait .dashboard-body {
   flex-direction: column !important;
+  justify-content: flex-start !important;
+  gap: clamp(8px, 1.5vh, 14px) !important;
+}
+
+body.orientation-force-portrait .hero-digital-clock {
+  font-size: clamp(2.2rem, 5vh, 3.2rem) !important;
+}
+
+body.orientation-force-portrait .hero-clock-labels {
+  margin-bottom: 8px !important;
+}
+
+body.orientation-force-portrait .ring-container {
+  width: clamp(125px, 16vh, 155px) !important;
+  height: clamp(125px, 16vh, 155px) !important;
+  margin-bottom: 8px !important;
+}
+
+body.orientation-force-portrait .focus-quote {
+  font-size: 0.72rem !important;
+  margin-bottom: 2px !important;
 }
 
 body.orientation-force-portrait .panels-grid {
   grid-template-columns: 1fr !important;
+  gap: 8px !important;
+  max-width: 520px !important;
+}
+
+body.orientation-force-portrait .time-card {
+  padding: 10px 16px !important;
+  gap: 6px !important;
+  flex-shrink: 0 !important;
+}
+
+body.orientation-force-portrait .card-remaining-time {
+  font-size: clamp(1.2rem, 2.5vw, 1.45rem) !important;
 }
 
 body.orientation-force-landscape .dashboard-body {
